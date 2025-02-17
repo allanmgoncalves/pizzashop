@@ -1,14 +1,25 @@
+import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { ArrowRight, Search, X } from 'lucide-react'
 
+import { OrderStatus } from '@/components/order-status'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 
 import { OrderDetails } from './order-details'
 
-// export interface OrderTableRowProps {}
+export interface OrderTableRowProps {
+  order: {
+    orderId: string
+    createdAt: string
+    status: 'pending' | 'canceled' | 'processing' | 'delivering' | 'delivered'
+    customerName: string
+    total: number
+  }
+}
 
-export function OrderTableRow() {
+export function OrderTableRow({ order }: OrderTableRowProps) {
   return (
     <TableRow>
       <TableCell>
@@ -23,17 +34,24 @@ export function OrderTableRow() {
         </Dialog>
       </TableCell>
       <TableCell className="font-mono text-xs font-medium">
-        9876eqf87ewfqt68qwd
+        {order.orderId}
       </TableCell>
-      <TableCell className="text-muted-foreground">15 minutes ago</TableCell>
+      <TableCell className="text-muted-foreground">
+        {formatDistanceToNow(order.createdAt, {
+          locale: ptBR,
+          addSuffix: true,
+        })}
+      </TableCell>
       <TableCell>
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-slate-400" />
-          <span>Pending</span>
-        </div>
+        <OrderStatus status={order.status} />
       </TableCell>
-      <TableCell className="font-medium">Allan Goncalves</TableCell>
-      <TableCell className="font-medium">$35.00</TableCell>
+      <TableCell className="font-medium">{order.customerName}</TableCell>
+      <TableCell className="font-medium">
+        {order.total.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        })}
+      </TableCell>
       <TableCell>
         <Button variant="outline" size="xs">
           <ArrowRight className="mr-2 h-3 w-3" />
