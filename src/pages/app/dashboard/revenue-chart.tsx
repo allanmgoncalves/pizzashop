@@ -1,4 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
+import { subDays } from 'date-fns'
+import { useMemo, useState } from 'react'
+import { DateRange } from 'react-day-picker'
 import {
   CartesianGrid,
   Line,
@@ -9,8 +12,6 @@ import {
 } from 'recharts'
 import colors from 'tailwindcss/colors'
 
-import { DateRange } from "react-day-picker"
-
 import { getDailyRevenueInPeriod } from '@/api/get-daily-revenue-in-period'
 import {
   Card,
@@ -19,33 +20,31 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
 import { DatePickerWithRange } from '@/components/ui/date-picker-with-range'
-import { useMemo, useState } from 'react'
-import { subDays } from 'date-fns'
+import { Label } from '@/components/ui/label'
 
 export function RevenueChart() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: subDays(new Date(), 7),
-    to: new Date()
+    to: new Date(),
   })
 
   const { data: dailyRevenueInPeriod } = useQuery({
     queryKey: ['metrics', 'daily-receipt-in-period', dateRange],
-    queryFn: () => getDailyRevenueInPeriod({
-      from: dateRange?.from,
-      to: dateRange?.to
-    }),
+    queryFn: () =>
+      getDailyRevenueInPeriod({
+        from: dateRange?.from,
+        to: dateRange?.to,
+      }),
   })
 
   const chartData = useMemo(() => {
-    return dailyRevenueInPeriod?.map(chartItem => {
+    return dailyRevenueInPeriod?.map((chartItem) => {
       return {
         date: chartItem.date,
-        receipt: chartItem.receipt / 100 
+        receipt: chartItem.receipt / 100,
       }
     })
-
   }, [dailyRevenueInPeriod])
 
   return (
@@ -58,7 +57,7 @@ export function RevenueChart() {
           <CardDescription>Daily revenue for the period</CardDescription>
         </div>
 
-        <div className='flex items-center gap-3'>
+        <div className="flex items-center gap-3">
           <Label>Period</Label>
           <DatePickerWithRange date={dateRange} onDateChange={setDateRange} />
         </div>
