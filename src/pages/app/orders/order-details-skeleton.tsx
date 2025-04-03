@@ -82,7 +82,7 @@ export function OrderDetailsSkeleton() {
           <TableRow>
             <TableCell colSpan={3}>Total order</TableCell>
             <TableCell className="text-right font-medium">
-              <Skeleton className="h-5 w-20" />
+              <Skeleton className="ml-auto h-5 w-20" />
             </TableCell>
           </TableRow>
         </TableFooter>
