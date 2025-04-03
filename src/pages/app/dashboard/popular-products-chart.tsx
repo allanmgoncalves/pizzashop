@@ -6,14 +6,6 @@ import colors from 'tailwindcss/colors'
 import { getPopularProducts } from '@/api/get-popular-products'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-const data = [
-  { product: 'Peperoni', amount: 40 },
-  { product: 'Mozzarella', amount: 30 },
-  { product: '4 cheeses', amount: 50 },
-  { product: 'Tuscan', amount: 60 },
-  { product: 'Marguerita', amount: 20 },
-]
-
 const COLORS = [
   colors.sky[500],
   colors.amber[500],
@@ -43,7 +35,7 @@ export function PopularProductsChart() {
           <ResponsiveContainer width="100%" height={240}>
             <PieChart style={{ fontSize: 12 }}>
               <Pie
-                data={data}
+                data={popularProducts}
                 dataKey="amount"
                 nameKey="product"
                 cx="50%"
