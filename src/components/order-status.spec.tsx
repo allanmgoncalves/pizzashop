@@ -2,12 +2,6 @@ import { render } from '@testing-library/react'
 
 import { OrderStatus } from './order-status'
 
-// pending: 'Pendente',
-// canceled: 'Cancelado',
-// processing: 'Processando',
-// delivering: 'Em entrega',
-// delivered: 'Entregue',
-
 describe('Order Status', () => {
   it('should display the right text when order status is pending', () => {
     const wrapper = render(<OrderStatus status="pending" />)
